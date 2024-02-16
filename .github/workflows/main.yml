@@ -1,0 +1,17 @@
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build and test
+        run: ./mvnw clean package
+      - name: Build Docker image
+        run: |
+          docker build -t rag-app-backend .
+          docker tag rag-app-backend animzor/rag-app-backend
+          docker push animzor/rag-app-backend
