@@ -31,7 +31,7 @@ jobs:
           secretPresent() {
             emptyHash=$(MD5 "")
             secretHash=$(MD5 "${1}")
-            ! diff &lt;(echo $secretHash) &lt;(echo $emptyHash) &amp;&gt; /dev/null
+            ! diff &lt;(echo $secretHash) &lt;(echo $emptyHash)
           }
       
           errorMessage() {
