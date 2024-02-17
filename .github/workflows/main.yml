@@ -12,45 +12,13 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_DATABASE: mysqldb
-          MYSQL_USER: ${{ secrets.MYSQL_USER }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_USER: animzor
+          MYSQL_PASSWORD: mega44secret
+          MYSQL_ROOT_PASSWORD: mega44rsecret
         ports:
         - '3306:3306'
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
-
-      - name: Assert Secrets Present
-        shell: bash
-        run: |
-          MD5() {
-            result=($(md5sum &lt;(echo "${1}")))
-            echo $result
-          }
-      
-          secretPresent() {
-            emptyHash=$(MD5 "")
-            secretHash=$(MD5 "${1}")
-            ! diff &lt;(echo $secretHash) &lt;(echo $emptyHash)
-          }
-      
-          errorMessage() {
-            echo "Your secret ${1} seems to be missing please contact the Central-OPs team"
-            return 1
-          }
-      
-          secretStatus=0
-      
-          secretPresent "${{ secrets.MYSQL_USER }}" || errorMessage "MYSQL_USER" || secretStatus=1
-          secretPresent "${{ secrets.MYSQL_PASSWORD }}" || errorMessage "MYSQL_PASSWORD" || secretStatus=2
-          secretPresent "${{ secrets.MYSQL_ROOT_PASSWORD }}" || errorMessage "MYSQL_ROOT_PASSWORD" || secretStatus=3
-          secretPresent "${{ secrets.DOCKERHUB_USERNAME }}" || errorMessage "DOCKERHUB_USERNAME" || secretStatus=4
-          secretPresent "${{ secrets.DOCKERHUB_TOKEN }}" || errorMessage "DOCKERHUB_TOKEN" || secretStatus=5
-      
-          exit $secretStatus
-      
-      - run: echo "Everything Checks Out 👍"
-    
       - uses: actions/checkout@v3
       - name: Verify DB connection
         env:
@@ -66,7 +34,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
         env:
-          database.password: ${{ secrets.MYSQL_PASSWORD }}
+          database.password: mega44secret
       - name: Build and test
         run: ./mvnw clean package
       - name: Login to Docker Hub
