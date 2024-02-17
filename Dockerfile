@@ -1,4 +1,4 @@
-Docker Build Maven Stage
+#Docker Build Maven Stage
 FROM eclipse-temurin:17-jdk-alpine AS build
 # Copy folder in docker
 WORKDIR /opt/app
