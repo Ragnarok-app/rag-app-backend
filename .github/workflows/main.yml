@@ -34,7 +34,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
         env:
-          database.password: mega44secret
+          database.password: ${{ secrets.MYSQL_PASSWORD }}
       - name: Build and test
         run: ./mvnw clean package
       - name: Login to Docker Hub
