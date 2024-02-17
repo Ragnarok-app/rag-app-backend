@@ -12,12 +12,21 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_DATABASE: mysqldb
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_USER: animzor
+          MYSQL_PASSWORD: mega44secret
+          MYSQL_ROOT_PASSWORD: mega44rsecret
         ports:
         - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - uses: actions/checkout@v3
+      - name: Verify DB connection
+        env:
+          PORT: ${{ job.services.mysqldb.ports[3306] }}
+        run: |
+          while ! mysqladmin ping -h"127.0.0.1" -P"$PORT" --silent; do
+            sleep 1
+          done
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
